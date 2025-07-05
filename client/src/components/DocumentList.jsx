@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PDFViewer from "./PDFViewer";
-import { fetchDocuments } from "../services/api";
+import { fetchDocuments } from "../api";
 
 const DocumentList = () => {
   const [documents, setDocuments] = useState([]);

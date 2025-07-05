@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "../../services/api"; // Make sure baseURL is set here
+import axios from "../../api"; // Make sure baseURL is set here
 
 const Register = () => {
   const [formData, setFormData] = useState({

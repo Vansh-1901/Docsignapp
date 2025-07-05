@@ -28,12 +28,12 @@ app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/signed", express.static(path.join(__dirname, "signed")));
 
-// ✅ Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/docs", documentRoutes);
-app.use("/api/signatures", signatureRoutes);
+// ✅ Mount routes WITHOUT /api prefix, because it's already in frontend requests
+app.use("/auth", authRoutes);
+app.use("/docs", documentRoutes);
+app.use("/signatures", signatureRoutes);
 
-// ✅ Root test route
+// ✅ Root route
 app.get("/", (req, res) => {
   res.send("✅ PDF App Backend is running");
 });

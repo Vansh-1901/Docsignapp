@@ -1,30 +1,27 @@
-import { useState } from 'react';
-import axios from '../services/api';
+import { useState } from "react";
+import axios from "../api";
 
 const SignatureStatus = ({ signature, documentOwnerId, currentUserId }) => {
   const [status, setStatus] = useState(signature.status);
-  const [reason, setReason] = useState('');
+  const [reason, setReason] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const isSigner = signature.signer === currentUserId;
   const isOwner = documentOwnerId === currentUserId;
-  const canUpdate = isSigner || (isOwner && status === 'rejected');
+  const canUpdate = isSigner || (isOwner && status === "rejected");
 
   const handleStatusChange = async (newStatus) => {
     if (!canUpdate) return;
-    
+
     setIsLoading(true);
     try {
-      const { data } = await axios.put(
-        `/signatures/${signature._id}/status`,
-        { 
-          status: newStatus,
-          reason: newStatus === 'rejected' ? reason : undefined
-        }
-      );
+      const { data } = await axios.put(`/signatures/${signature._id}/status`, {
+        status: newStatus,
+        reason: newStatus === "rejected" ? reason : undefined,
+      });
       setStatus(data.signature.status);
     } catch (error) {
-      console.error('Status update failed:', error);
+      console.error("Status update failed:", error);
     } finally {
       setIsLoading(false);
     }
@@ -33,50 +30,55 @@ const SignatureStatus = ({ signature, documentOwnerId, currentUserId }) => {
   return (
     <div className="border rounded-lg p-4 mb-4">
       <div className="flex items-center justify-between mb-2">
-        <span className={`font-medium ${
-          status === 'signed' ? 'text-green-600' : 
-          status === 'rejected' ? 'text-red-600' : 'text-yellow-600'
-        }`}>
+        <span
+          className={`font-medium ${
+            status === "signed"
+              ? "text-green-600"
+              : status === "rejected"
+              ? "text-red-600"
+              : "text-yellow-600"
+          }`}
+        >
           {status.toUpperCase()}
         </span>
-        
-        {canUpdate && status === 'pending' && (
+
+        {canUpdate && status === "pending" && (
           <div className="flex space-x-2">
             <button
-              onClick={() => handleStatusChange('signed')}
+              onClick={() => handleStatusChange("signed")}
               disabled={isLoading}
               className="px-3 py-1 bg-green-100 text-green-800 rounded disabled:opacity-50"
             >
-              {isLoading ? 'Signing...' : 'Sign'}
+              {isLoading ? "Signing..." : "Sign"}
             </button>
             <button
-              onClick={() => handleStatusChange('rejected')}
+              onClick={() => handleStatusChange("rejected")}
               disabled={isLoading || !reason.trim()}
               className="px-3 py-1 bg-red-100 text-red-800 rounded disabled:opacity-50"
             >
-              {isLoading ? 'Rejecting...' : 'Reject'}
+              {isLoading ? "Rejecting..." : "Reject"}
             </button>
           </div>
         )}
 
-        {isOwner && status === 'rejected' && (
+        {isOwner && status === "rejected" && (
           <button
-            onClick={() => handleStatusChange('signed')}
+            onClick={() => handleStatusChange("signed")}
             disabled={isLoading}
             className="px-3 py-1 bg-green-100 text-green-800 rounded disabled:opacity-50"
           >
-            {isLoading ? 'Approving...' : 'Approve Anyway'}
+            {isLoading ? "Approving..." : "Approve Anyway"}
           </button>
         )}
       </div>
 
-      {status === 'rejected' && (
+      {status === "rejected" && (
         <div className="text-sm text-gray-600">
-          <p>Reason: {signature.rejectionReason || 'No reason provided'}</p>
+          <p>Reason: {signature.rejectionReason || "No reason provided"}</p>
         </div>
       )}
 
-      {status === 'pending' && canUpdate && (
+      {status === "pending" && canUpdate && (
         <div className="mt-2">
           <textarea
             placeholder="Reason for rejection (optional)"

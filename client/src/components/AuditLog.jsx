@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "../services/api";
+import axios from "../api";
 
 const AuditLog = ({ documentId }) => {
   const [logs, setLogs] = useState([]);

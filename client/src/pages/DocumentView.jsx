@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Document, Page } from "react-pdf";
-import axios from "../services/api";
+import axios from "../api";
 import { toast } from "react-hot-toast";
 import AuditLog from "../components/AuditLog";
 import SignatureField from "../components/SignatureField";

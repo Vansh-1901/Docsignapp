@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "../services/api";
+import axios from "../api";
 import SignatureCanvas from "../components/SignatureCanvas";
 
 const PublicSign = () => {

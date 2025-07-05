@@ -1,5 +1,11 @@
+import { useState } from "react";
+import StatusFilter from "./StatusFilter";
+import DocumentCard from "./DocumentCard";
+import PDFViewer from "./PDFViewer";
+
 const DashboardLayout = ({ documents }) => {
   const [statusFilter, setStatusFilter] = useState("");
+  const [selectedDoc, setSelectedDoc] = useState(null); // ✅ new state
 
   const filteredDocuments = statusFilter
     ? documents.filter((doc) => doc.status === statusFilter)
@@ -23,11 +29,21 @@ const DashboardLayout = ({ documents }) => {
         <div className="md:w-3/4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredDocuments.map((document) => (
-              <DocumentCard key={document._id} document={document} />
+              <div key={document._id} onClick={() => setSelectedDoc(document)}>
+                <DocumentCard document={document} />
+              </div>
             ))}
+          </div>
+
+          {/* ✅ Preview Panel */}
+          <div className="mt-6 bg-white p-4 rounded shadow">
+            <h3 className="font-semibold text-gray-800 mb-2">Preview</h3>
+            <PDFViewer filename={selectedDoc?.filename} />
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+export default DashboardLayout;
